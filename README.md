@@ -1,3 +1,2 @@
-# githubFinder
+#gitHubFinder
 
-This is README

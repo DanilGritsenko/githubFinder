@@ -1,15 +1,30 @@
-loadEventListeners();
+//Init GutHub Class
+const github = new GitHub;
+//Init UI Class
+const ui = new UI;
 
-function loadEventListeners(){
-    document.addEventListener('DOMContentLoaded', getObject);
-}
+const searchUser = document.getElementById('searchUser');
 
-function getObject(){
-    const gitHub = new Github;
-    console.log(gitHub);
+searchUser.addEventListener('keyup', (event) => {
+    //get the input text from the searchUser input field
+    const userText = event.target.value;
+    if(userText !== '') {
+        //make a http call to GitHub API
+        github.getUser(userText).then(data => {
+            if(data.profile.message === 'Not Found'){
+                ui.showAlert('User Not Found', 'alert alert-danger');
+            } else {
+                //Show user profile and repos
+                ui.showProfile(data.profile);
+                ui.showRepos(data.repos);
 
-    gitHub.getUser('DanilGritsenko')
-    .then(data=> {
-        console.log(data);
-    })
-}
+            }
+            console.log(data);
+        })
+    } else {
+        ui.clearProfile();
+    } 
+})
+
+document.onload(ui.ShowCreator());
+
